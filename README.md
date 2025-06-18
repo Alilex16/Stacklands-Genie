@@ -1,3 +1,3 @@
 # Stacklands Mod Template
 
-For information about using the template, see the Modding Wiki
+Adds functionally to the well! Tossing coins in it now gives a chance to spawn a Lamp. Give it a good rub to release the Genie, who will grant you 3 wishes!

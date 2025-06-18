@@ -1,0 +1,16 @@
+{
+    "$schema": "../schemas/card.schema.json",
+    "id": "genie_special_genie",
+    "nameTerm": "genie_special_genie_name",
+    "descriptionTerm": "genie_special_genie_description",
+    "icon": "genie.png",
+    "value": -1,
+    "type": "Spirits",
+    "script": "GenieNS.Genie",
+    "_HasUniquePalette": true,
+    "_MyPalette": {
+        "Color": "#a6d9f6",
+        "Color2": "#92bfd9",
+        "Icon": "#000000"
+    }
+}

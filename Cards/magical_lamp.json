@@ -1,0 +1,17 @@
+{
+    "$schema": "../schemas/card.schema.json",
+    "id": "genie_special_magical_lamp",
+    "nameTerm": "genie_special_magical_lamp_name",
+    "descriptionTerm": "genie_special_magical_lamp_description",
+    "icon": "magical_lamp.png",
+    "value": -1,
+    "type": "Resources",
+    "script": "GenieNS.MagicalLamp",
+    "_IsShiny": true,
+    "_HasUniquePalette": true,
+    "_MyPalette": {
+        "Color": "#FFE299",
+        "Color2": "#F8C74A",
+        "Icon": "#000000"
+    }
+}
