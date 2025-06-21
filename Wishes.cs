@@ -6,6 +6,5 @@ public enum Wishes
     NoAggression,
     Powerful,
     Immortality,
-    BestFriend,
     Freedom
 }

@@ -1,0 +1,23 @@
+{
+    "$schema": "../schemas/card.schema.json",
+    "id": "genie_special_villager_genie",
+    "nameTerm": "genie_special_villager_genie_name",
+    "descriptionTerm": "genie_special_villager_genie_description",
+    "icon": "genie_free.png",
+    "value": -1,
+    "type": "Humans",
+    "script": "GenieNS.GenieFree",
+
+    "_CanBreed": false,
+    "_CanHaveInventory" : true,
+    
+    "_BaseCombatStats": {
+        "MaxHealth": 25,
+        "AttackSpeed": 2.9,
+        "HitChance": 0.8,
+        "AttackDamage": 2,
+        "Defence": 2,
+        "SpecialHits": []
+    },
+    "_HealthPoints": 25
+}

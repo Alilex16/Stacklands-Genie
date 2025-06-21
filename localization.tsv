@@ -4,6 +4,8 @@ genie_special_genie_description		Blue.. Looks friendly
 genie_special_magical_lamp_name		Magical Lamp
 genie_special_magical_lamp_description		An old-looking lamp that could use some polishing
 genie_special_magical_lamp_warning_description		<b>WARNING</b><br>Destroying the lamp will forfeit all wishes made. You'd have to find a new lamp to start making wishes again.
+genie_special_villager_genie_name		Genie (free)
+genie_special_villager_genie_description		Your new best friend! Gets work done twice as fast and does not require any food.
 label_magical_lamp_rubbing		Cleaning the lamp
 label_rubbing_01		It seems hard to get it clean. Maybe you should try rubbing a bit harder.
 label_rubbing_02		There you go. Looks a lot better now!
@@ -14,8 +16,12 @@ label_lamp_destroyed		Your magical lamp has been destroyed - you feel your wishe
 label_lamp_intro		What is going on?
 label_lamp_intro_done		Hello again Genie
 label_lamp_lost_all_wishes		Magic is fading
-label_lamp_who_are_you		Wow! Who are you?
-label_genie_cutscene_text		"Hey there friend! I'm [genie]. As you're the one that set me free, I will grant you 3 wishes!"
+label_lamp_who_are_you		.. Wha- Who are you?
+label_genie_wish_already_chosen		"You've already been granted this wish, silly friend."
+label_genie_already_wished		You already made a wish this month. Let me know your wish after sleeping on it!
+label_genie_introduction		"Hey there friend! I'm Genie. As you're the one that set me free, I will grant you 3 wishes!"
+label_genie_recurring		Hey again friend! Ready to make your [count] wish?
+label_genie_set_free		"Are you sure?! You didn't have to do that! You have a heart of gold, my bestest friend of friends!"
 label_genie_exit		Let me think on it some more
 label_genie_wish_granted		Your wish is my command!
 label_genie_wish_healthy		I wish .. to solve world hunger!
@@ -24,9 +30,8 @@ label_genie_wish_world_peace		I wish .. for world peace!
 label_genie_wish_no_aggression		I wish .. for no more needless violence!
 label_genie_wish_powerful		I wish .. to become super strong!
 label_genie_wish_immortality		I wish .. to live .. forever!
-label_genie_wish_freedom		"Genie, I wish to set you free."
+label_genie_wish_freedom		Genie - I wish to set you free.
 label_genie_wish_infinite_wishes		I wish for infinite wishes!
 label_genie_wish_best_friend		I wish my best friend was here..
 label_genie_take_time		Very well - take your time!
-label_genie_wish_ready		Hey again friend! Ready to make a wish?
 label_genie_infinite_wishes_joke_description		"Haha you're smart! But no. It doesn't work that way, sorry buddy"
