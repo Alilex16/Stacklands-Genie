@@ -3,25 +3,34 @@ genie_special_genie_name		Genie
 genie_special_genie_description		Blue.. Looks friendly
 genie_special_magical_lamp_name		Magical Lamp
 genie_special_magical_lamp_description		An old-looking lamp that could use some polishing
-genie_special_magical_lamp_warning_description		<b>WARNING</b><br>Destroying the lamp will forfeit all wishes made. You'd have to find a new lamp to start making wishes again.
+genie_special_magical_lamp_warning_description		<color:#FF0000><b>WARNING</b></color><br>Destroying the lamp will forfeit all wishes made. You'd have to find a new lamp to start making wishes again.
 genie_special_villager_genie_name		Genie (free)
 genie_special_villager_genie_description		Your new best friend! Gets work done twice as fast and does not require any food.
-label_magical_lamp_rubbing		Cleaning the lamp
-label_rubbing_01		It seems hard to get it clean. Maybe you should try rubbing a bit harder.
-label_rubbing_02		There you go. Looks a lot better now!
-label_rubbing_03		Wait - what's happening?
-label_rubbing_try_harder		Rub harder
+label_lamp_cleaning_title		Cleaning the lamp
+label_lamp_cleaning1		It seems quite hard to get it clean. Maybe you should try a bit harder.
+label_lamp_cleaning2		There you go. Looks a lot better now!
+label_lamp_cleaning3		Wait - what's happening?
 label_lamp_cutscene_title		The lamp starts to wobble
 label_lamp_destroyed		Your magical lamp has been destroyed - you feel your wishes being lost
+label_lamp_done_all_wishes		Made your wishes
 label_lamp_intro		What is going on?
 label_lamp_intro_done		Hello again Genie
 label_lamp_lost_all_wishes		Magic is fading
+label_lamp_max_wishes		You've already made your 3 wishes! Genie refuses to come out
+label_lamp_max_wishes_freed_genie		The lamp no longer has a prisoner - rubbing it has no effect
 label_lamp_who_are_you		.. Wha- Who are you?
-label_genie_wish_already_chosen		"You've already been granted this wish, silly friend."
+label_lamp_wishes_done_description		<br><br><b>Wishes done:</b><br>
+label_genie_wish_already_chosen		You've already been granted this wish - silly friend
+label_genie_already_peaceful		Looks like it's already very peaceful around here.
 label_genie_already_wished		You already made a wish this month. Let me know your wish after sleeping on it!
-label_genie_introduction		"Hey there friend! I'm Genie. As you're the one that set me free, I will grant you 3 wishes!"
+label_genie_introduction1		Hey there friend! I'm Genie. As you're the one that set me free - I will grant you 3 wishes!
+label_genie_introduction2		Really? - I can ask for anything?
+label_genie_introduction3		Haha you can try!
+label_genie_introduction4		What about an infinite amount of wishes?
+label_genie_introduction5		Haha you're smart! But no. It doesn't work that way - sorry pal
+label_genie_first_wish		Are you ready to make your first wish?
 label_genie_recurring		Hey again friend! Ready to make your [count] wish?
-label_genie_set_free		"Are you sure?! You didn't have to do that! You have a heart of gold, my bestest friend of friends!"
+label_genie_set_free		Are you sure?! You didn't have to do that! You have a heart of gold - my bestest friend of friends!
 label_genie_exit		Let me think on it some more
 label_genie_wish_granted		Your wish is my command!
 label_genie_wish_healthy		I wish .. to solve world hunger!
@@ -31,7 +40,12 @@ label_genie_wish_no_aggression		I wish .. for no more needless violence!
 label_genie_wish_powerful		I wish .. to become super strong!
 label_genie_wish_immortality		I wish .. to live .. forever!
 label_genie_wish_freedom		Genie - I wish to set you free.
-label_genie_wish_infinite_wishes		I wish for infinite wishes!
 label_genie_wish_best_friend		I wish my best friend was here..
 label_genie_take_time		Very well - take your time!
-label_genie_infinite_wishes_joke_description		"Haha you're smart! But no. It doesn't work that way, sorry buddy"
+label_result_wishes_healthy		The food intake for all your villagers that require 2 or more is reduced by 1
+label_result_wishes_wealthy		All cards that can be sold are worth 1 more
+label_result_wishes_world_peace		Sets your game to peaceful mode (no more enemies)
+label_result_wishes_no_aggression		Enemies will no longer force fights with your villagers
+label_result_wishes_powerful		All villagers get +2 to Attack Damage and -1.2 to Attack Speed
+label_result_wishes_immortality		All villagers get +10 to Max HP and a 5% chance to lifesteal from your target
+label_result_wishes_freedom		Genie is now your friend and will stay by your side

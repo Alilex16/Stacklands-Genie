@@ -13,8 +13,13 @@ namespace GenieNS
 
         public bool LampGranted(int _wishCount)
         {
-            int rand = UnityEngine.Random.Range(_wishCount - 1, 20);
-            if (rand == 19 || _wishCount == 5) // 50% chance to get it before the 5th wish
+            int min = _wishCount - 1;
+            int max = 20;
+            int rand = UnityEngine.Random.Range(min, max);
+            
+            // Debug.LogWarning($"Random Number between {min.ToString()} and {max.ToString()}: " + rand.ToString());
+
+            if (rand >= 19 || _wishCount == 5) // 50% chance to get it before the 5th wish
             {
                 return true;
             }
@@ -37,8 +42,6 @@ namespace GenieNS
         {
             instance = this;
 
-            // MagicalLamp.instance.LoseAllWishes();
-            
             Harmony.PatchAll(typeof(Patches));
 
             SokLoc.instance.LoadTermsFromFile(System.IO.Path.Combine(this.Path, "localization.tsv"));
@@ -50,16 +53,6 @@ namespace GenieNS
 
             Logger.Log("Ready!");
         }
-
-        // public bool WishChosen(Dictionary<Wishes, bool> dictionary, Wishes expectedKey, bool expectedValue) // not needed anymore
-        // {
-        //     bool actualValue;
-        //     if (!dictionary.TryGetValue(expectedKey, out actualValue))
-        //     {
-        //         return false;
-        //     }
-        //     return actualValue == expectedValue;
-        // }
 
         public bool WishChosen(Wishes expectedKey)
         {
@@ -82,124 +75,40 @@ namespace GenieNS
         }
 
 
+        public List<Combatable> WishRecipientList = new List<Combatable>();
 
-        public List<Combatable> TheList = new List<Combatable>();
-
-        public void AddToCombatableList(Combatable combatable)
+        public void AddToWishRecipientList(Combatable combatable)
         {
-            if (!TheList.Contains(combatable))
+            if (!WishRecipientList.Contains(combatable))
             {
-                TheList.Add(combatable);
-                // Debug.LogWarning("Added combatable Id to list : " + combatable.Id);
+                WishRecipientList.Add(combatable);
             }
         }
 
-        public List<Combatable> GetCombatableList()
+        public List<Combatable> GetWishRecipientList()
         {
-            return TheList;
+            return WishRecipientList;
         }
 
-        public void ClearCombatableList()
+        public void ClearWishRecipientList()
         {
-            TheList.Clear();
+            WishRecipientList.Clear();
         }
 
-
-        // public CombatStats MadePowerful(CombatStats combatStats)
-        // {
-        //     CombatStats _new_combat_stats = combatStats;
-            
-        //     _new_combat_stats.AttackDamage = combatStats.AttackDamage + 2;
-        //     _new_combat_stats.AttackSpeed -= (float)1.2;
-            
-        //     return _new_combat_stats;
-        // }
-
-
-
-
-
-
-
-
-        // public Combatable MadePowerful(Combatable combatable)
-        // {
-        //     Combatable _new_combatable = combatable;
-
-        //     combatable.BaseCombatStats.AttackDamage += 2;
-        //     combatable.BaseCombatStats.AttackSpeed -= (float)1.2;
-
-        //     return _new_combatable;
-        // }
-
-        // public Combatable MadeImmortal(Combatable combatable)
-        // {
-        //     Combatable _new_combatable = combatable;
-
-        //     SpecialHit new_special_hit = new SpecialHit(); // what if it already has Lifesteal?
-        //     new_special_hit.Chance = 5;
-        //     new_special_hit.HitType = SpecialHitType.LifeSteal;
-        //     new_special_hit.Target = SpecialHitTarget.Target;
-
-        //     _new_combatable.BaseCombatStats.MaxHealth += 10;
-        //     _new_combatable.BaseCombatStats.SpecialHits.Add(new_special_hit);
-
-        //     return _new_combatable;
-        // }
-
-
-        // public BaseVillager MadePowerful(BaseVillager combatable)
-        // {
-        //     BaseVillager _new_combatable = combatable;
-
-        //     combatable.BaseCombatStats.AttackDamage += 2;
-        //     combatable.BaseCombatStats.AttackSpeed -= (float)1.2;
-
-        //     return _new_combatable;
-        // }
-
-        // public BaseVillager MadeImmortal(BaseVillager combatable)
-        // {
-        //     BaseVillager _new_combatable = combatable;
-
-        //     SpecialHit new_special_hit = new SpecialHit(); // what if it already has Lifesteal?
-        //     new_special_hit.Chance = 5;
-        //     new_special_hit.HitType = SpecialHitType.LifeSteal;
-        //     new_special_hit.Target = SpecialHitTarget.Target;
-
-        //     _new_combatable.BaseCombatStats.MaxHealth += 10;
-        //     _new_combatable.BaseCombatStats.SpecialHits.Add(new_special_hit);
-
-        //     return _new_combatable;
-        // }
-
-        // public int GetWishesDone()
-        // {
-        //     return MagicalLamp.wishedAmount;
-        // }
-
+        public void ResetEquipment(CardData cardData)
+        {
+		    List<Equipable> allEquipables = cardData.GetAllEquipables();
+            foreach (Equipable item in allEquipables)
+            {
+                if (item != null && !string.IsNullOrEmpty(item.Id))
+                {
+                    cardData.MyGameCard.Unequip(item);
+                    item.MyGameCard.SendIt();
+                }
+            }            
+        }
 
     }
-
-    // public static class StringUtil
-    // {
-    //     public static string JoinFilter(string separator, IEnumerable<string> strings)
-    //     {
-    //         return string.Join(separator, strings.Where(s => !string.IsNullOrEmpty(s)));
-    //     }
-    //     public static string JoinFilter(string separator, params string[] str)
-    //     {
-    //         return string.Join(separator, str?.Where(s => !string.IsNullOrEmpty(s)));
-    //     }
-    // }
-
-    // public class WishesDoneTest
-    // {
-    //     public WishesDoneTest()
-    //     {
-    //         MagicalLamp.wishesChosenDict = new Dictionary<Wishes, bool>();
-    //     }
-    // }
 
     public class Genie : CardData
     {
@@ -227,7 +136,8 @@ namespace GenieNS
             return 0;
         }
     }
-    
+
+
     public class MagicalLamp : CardData
     {
         [ExtraData("intro_genie")]
@@ -245,57 +155,43 @@ namespace GenieNS
 
 	    public bool inCutscene;
 
-        private List<Wishes> wishesChosenList = new List<Wishes>(); // need this??
-
-
-        // public void awake()
-        // {
-        //     LoseAllWishes();
-        // }
 
         public override void OnDestroyCard()
         {
-            LoseAllWishes(); // test this more
+            LoseAllWishes();
+        }
+        
+        public void LoseAllWishes()
+        {
+            introDone = false;
+            wishedAmount = 0;
+            moonCountWishMade = 0;
+            wishesChosenNames = string.Empty;
+            GenieMod.instance.ClearWishRecipientList();
+
+		    CardData cardData = WorldManager.instance.GetCard("genie_special_villager_genie");
+            if (cardData != null)
+            {
+                GenieMod.instance.ResetEquipment(cardData);
+		        cardData.MyGameCard.DestroyCard();
+            }
 
             if (!TransitionScreen.InTransition && !WorldManager.instance.InAnimation)
             {
                 LostAllWishesPrompt("label_lamp_lost_all_wishes");
             }
-            // Destroy(this);
-        }
-        
-        public void LoseAllWishes()
-        {
-            wishedAmount = 0;
-            moonCountWishMade = 0;
-            wishesChosenNames = string.Empty;
-
-            foreach (GameCard item in WorldManager.instance.AllCards)
-            {
-                if (item.CardData.Id == "genie_special_genie" || item.CardData.Id == "genie_special_villager_genie")
-                {
-                    item.DestroyCard();
-                }
-            }
         }
 
-        public void LostAllWishesPrompt(string term)
+        private void LostAllWishesPrompt(string term)
         {
             ModalScreen.instance.Clear();
-
             ModalScreen.instance.SetTexts(SokLoc.Translate(term), SokLoc.Translate("label_lamp_destroyed"));
-            
             ModalScreen.instance.AddOption(SokLoc.Translate("label_okay"), delegate
             {
-                // LostAllWishes(); // have to press Okey twice when it's here..
                 GameCanvas.instance.CloseModal();
             });
-
-            // LostAllWishes(); 
-
             GameCanvas.instance.OpenModal();
         }
-
 
         protected override bool CanHaveCard(CardData otherCard)
         {
@@ -304,9 +200,9 @@ namespace GenieNS
 
         public override void Clicked()
         {
-            if (wishedAmount >= 3) // can rub until you did all your 3 wishes
+            if (wishedAmount >= 3)
             {
-                // add pop-up that you've already made your 3 wishes and the Genie refuses to come out ; if freed Genie: The lamp no longer has a prisoner; rubbing it has no effect
+                AllWishesDonePrompt("label_lamp_done_all_wishes");
                 return;
             }
 
@@ -315,7 +211,27 @@ namespace GenieNS
 				TryStartGenieCutscene(GenieIntro(this));
             }
 
-            base.Clicked();
+            // base.Clicked(); // so it doesn't hop
+        }
+
+        private void AllWishesDonePrompt(string term)
+        {
+            ModalScreen.instance.Clear();
+
+            if (GenieMod.instance.WishChosen(Wishes.Freedom))
+            {
+                ModalScreen.instance.SetTexts(SokLoc.Translate(term), SokLoc.Translate("label_lamp_max_wishes_freed_genie"));
+            }
+            else
+            {
+                ModalScreen.instance.SetTexts(SokLoc.Translate(term), SokLoc.Translate("label_lamp_max_wishes"));
+            }
+
+            ModalScreen.instance.AddOption(SokLoc.Translate("label_okay"), delegate
+            {
+                GameCanvas.instance.CloseModal();
+            });
+            GameCanvas.instance.OpenModal();
         }
 
         private void TryStartGenieCutscene(IEnumerator cutscene)
@@ -334,7 +250,6 @@ namespace GenieNS
             yield return new WaitForSeconds(0.2f);
         }
 
-        
         public static IEnumerator GenieIntro(MagicalLamp lamp)
         {
             GameCanvas.instance.SetScreen<CutsceneScreen>();
@@ -342,24 +257,23 @@ namespace GenieNS
 
             if (!introDone)
             {
-                Cutscenes.Title = SokLoc.Translate("label_magical_lamp_rubbing");
-                yield return Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_rubbing_01"));
-                yield return new WaitForSeconds(1.5f);
-                DramaticDots();
-                Cutscenes.Title = SokLoc.Translate("label_magical_lamp_rubbing");
-                GameCamera.instance.Screenshake = 0.5f;
-                // yield return Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_rubbing_02"));
-                Cutscenes.Text = SokLoc.Translate("label_rubbing_02");
-                // DramaticDots();
-                // yield return new WaitForSeconds(1.0f);
-                Cutscenes.Text = "";
-                Cutscenes.Title = SokLoc.Translate("label_magical_lamp_rubbing");
-                yield return new WaitForSeconds(0.5f);
-                yield return Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_rubbing_03"));
-                yield return new WaitForSeconds(1.5f);
-            }
+                Cutscenes.Title = SokLoc.Translate("label_lamp_cleaning_title");
+                yield return Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_lamp_cleaning1"));
+                yield return new WaitForSeconds(1.0f);
+                
+                Cutscenes.Title = SokLoc.Translate("label_lamp_cleaning_title");
+                GameCamera.instance.Screenshake = 0.2f;
+                yield return Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_lamp_cleaning2"));
+                yield return new WaitForSeconds(1.0f);
 
-            // after intro has been done, the there should be an option to not rub the lamp (in case of accidental clicks)
+                GameCamera.instance.Screenshake = 0.5f;
+
+                Cutscenes.Text = "";
+                Cutscenes.Title = SokLoc.Translate("label_lamp_cleaning_title");
+                yield return new WaitForSeconds(0.5f);
+                yield return Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_lamp_cleaning3"));
+                yield return new WaitForSeconds(1.0f);
+            }
 
             Cutscenes.Title = SokLoc.Translate("label_lamp_cutscene_title");
             GameCamera.instance.TargetCardOverride = lamp;
@@ -368,52 +282,67 @@ namespace GenieNS
 
             yield return DramaticDots();
             
-            // working example
-            // yield return GenieMod.introDone ? Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_lamp_intro_done")) : Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_lamp_intro"));
-
             if (!introDone)
             {
                 yield return Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_lamp_intro"));
             }
 
             yield return new WaitForSeconds(0.5f);
-            GameCamera.instance.Screenshake = 0.3f;
+            // GameCamera.instance.Screenshake = 0.3f;
             
-			GameCard gameCard = Cutscenes.FindOrCreateGameCard("genie_special_genie", lamp.transform.position);
+			GameCard gameCard = null;
 
-            WorldManager.instance.CreateSmoke(lamp.transform.position);
+            if (moonCountWishMade != WorldManager.instance.CurrentMonth) // if you haven't already made a wish this month
+            {
+                GameCamera.instance.Screenshake = 0.3f;
 
-			if (gameCard != null)
-			{
-				gameCard.SendIt();
+                gameCard = Cutscenes.FindOrCreateGameCard("genie_special_genie", lamp.transform.position);
+
+                WorldManager.instance.CreateSmoke(lamp.transform.position);
+
+                if (gameCard != null)
+                {
+                    gameCard.SendIt();
+                }
+
+                GameCamera.instance.TargetCardOverride = gameCard;
+
+                yield return new WaitForSeconds(0.2f);
+
+                WorldManager.instance.CreateSmoke(gameCard.transform.position);
+
+                yield return DramaticDots();
+
+                yield return introDone ? Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_lamp_intro_done")) : Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_lamp_who_are_you"));
             }
 
-			GameCamera.instance.TargetCardOverride = gameCard;
-
-            yield return new WaitForSeconds(0.2f);
-
-            WorldManager.instance.CreateSmoke(gameCard.transform.position);
-
-            yield return DramaticDots();
-
-            yield return introDone ? Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_lamp_intro_done")) : Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_lamp_who_are_you"));
-
-			// Cutscenes.Title = "";
             Cutscenes.Title = "Genie";
 
             if (!introDone)
             {
-                // Cutscenes.Title = "Genie";
-			    Cutscenes.Text = SokLoc.Translate("label_genie_introduction");
+			    Cutscenes.Text = SokLoc.Translate("label_genie_introduction1");
+
+                yield return new WaitForSeconds(0.5f);
+                yield return DramaticDots();
+				yield return Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_genie_introduction2"));
+
+                Cutscenes.Title = "Genie";
+                Cutscenes.Text = SokLoc.Translate("label_genie_introduction3");
+
+                yield return new WaitForSeconds(2.0f);
+                yield return DramaticDots();
+				yield return Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_genie_introduction4"));
+
+                Cutscenes.Title = "Genie";
+                Cutscenes.Text = SokLoc.Translate("label_genie_introduction5");
+				yield return Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_okay"));
+
+			    Cutscenes.Text = SokLoc.Translate("label_genie_first_wish");
             }
             else
             {
                 Cutscenes.Text = SokLoc.Translate("label_genie_recurring", LocParam.Create("count", GetWishCountDescription()));
             }
-
-
-            // add some more flavor here during the intro?
-            // -- really, I can ask for anything? Haha you can try! There's a few rules. What about an infinite amount of wishes?
 
             if (moonCountWishMade == WorldManager.instance.CurrentMonth) // already made a wish this month
             {
@@ -424,12 +353,10 @@ namespace GenieNS
             else
             {
                 string[] AvailableWishList = GetAvailableWishes();
-                // yield return Cutscenes.WaitForAnswer(SokLoc.Translate("label_genie_exit"), SokLoc.Translate("label_genie_wish_healthy"), SokLoc.Translate("label_genie_wish_wealthy"), SokLoc.Translate("label_genie_wish_world_peace"), SokLoc.Translate("label_genie_wish_no_aggression"), SokLoc.Translate("label_genie_wish_powerful"), SokLoc.Translate("label_genie_wish_immortality"), SokLoc.Translate("label_genie_wish_freedom"));
                 yield return Cutscenes.WaitForAnswer(AvailableWishList);
 
                 if (WorldManager.instance.ContinueButtonIndex == 0) // first option; always available - no wish being made
                 {
-                    //Cutscenes.Title = "Genie";
                     Cutscenes.Text = SokLoc.Translate("label_genie_take_time");
                 }
                 else
@@ -445,29 +372,67 @@ namespace GenieNS
                                 wishedList = wishesChosenNames.Split(',').ToList();
                             }
 
-                            if (wishedList.Contains(wish.ToString())) // already wished this
+                            if (wishedList.Contains(wish.ToString())) // already wished this before
                             {
                                 Cutscenes.Text = SokLoc.Translate("label_genie_wish_already_chosen");
                                 break;
                             }
 
-                            if (wish == Wishes.Freedom) // setting the Genie free : different Text
+                            if (wish == Wishes.Healthy)
                             {
-                                Cutscenes.Text = SokLoc.Translate("label_genie_set_free");
-                                yield return new WaitForSeconds(1.8f);
-                                WorldManager.instance.ChangeToCard(gameCard, "genie_special_villager_genie");
+                                Cutscenes.Text = SokLoc.Translate("label_result_wishes_healthy");
                             }
 
-                            // if wish is powerful/immortal -> cycle through all current cards and update
+                            if (wish == Wishes.Wealthy)
+                            {
+                                Cutscenes.Text = SokLoc.Translate("label_result_wishes_wealthy");
+                            }
 
-                            Cutscenes.Text = SokLoc.Translate("label_genie_wish_granted");
-                            // add notification about what actually changed!
+                            if (wish == Wishes.WorldPeace)
+                            {
+                                if (WorldManager.instance.CurrentRunOptions.IsPeacefulMode)
+                                {
+                                    Cutscenes.Text = SokLoc.Translate("label_genie_already_peaceful");
+                                    break;
+                                }
+                                else
+                                {
+                                    WorldManager.instance.CurrentRunOptions.IsPeacefulMode = true;
+                                    Cutscenes.Text = SokLoc.Translate("label_result_wishes_world_peace");
+                                }
+                            }
+
+                            if (wish == Wishes.NoAggression)
+                            {
+                                Cutscenes.Text = SokLoc.Translate("label_result_wishes_no_aggression");
+                            }
+
+                            if (wish == Wishes.Powerful)
+                            {
+                                Cutscenes.Text = SokLoc.Translate("label_result_wishes_powerful");
+                            }
+
+                            if (wish == Wishes.Immortality)
+                            {
+                                Cutscenes.Text = SokLoc.Translate("label_result_wishes_immortality");
+                            }
+
+                            if (wish == Wishes.Freedom)
+                            {
+                                Cutscenes.Text = SokLoc.Translate("label_genie_set_free");
+                                yield return new WaitForSeconds(2.0f);
+                                WorldManager.instance.ChangeToCard(gameCard, "genie_special_villager_genie");
+                                
+                                Cutscenes.Text = SokLoc.Translate("label_result_wishes_freedom");
+                            }
+
+                            Cutscenes.Title = SokLoc.Translate("label_genie_wish_granted");
+
+				            yield return Cutscenes.WaitForContinueClicked(SokLoc.Translate("label_okay"));
 
                             wishedList.Add(wish.ToString());
                             wishesChosenNames = String.Join(",", wishedList);
-                            //wishesChosenNames = StringUtil.JoinFilter(",", wishedList);  /// 
 
-                            // wishesChosenDict.Add(wish, true); // remove
                             wishedAmount++;
                             moonCountWishMade = WorldManager.instance.CurrentMonth;
 
@@ -476,24 +441,12 @@ namespace GenieNS
                             break;
                         }
                     }
-                   
-                    // int wishHealthy = (int)Wishes.Healthy;
-
-                    // if (wishHealthy == WorldManager.instance.ContinueButtonIndex)
-                    // {
-                    //     wishesChosenDict.Add(wish, true);
-                    //     // break;
-                    // }
                 }
             }
             
-            //Cutscenes.Title = "Genie";
-            //Cutscenes.Title = "";
-            //Cutscenes.Text = "";
-
             yield return new WaitForSeconds(1.2f);
 
-            if (gameCard != null)
+            if (gameCard != null && gameCard.CardData.Id != "genie_special_villager_genie")
             {
                 WorldManager.instance.CreateSmoke(gameCard.transform.position);
                 gameCard.DestroyCard();
@@ -502,7 +455,6 @@ namespace GenieNS
             introDone = true;
 			StopIntro();
 		    lamp.inCutscene = false;
-
         }
 
         public static string GetWishCountDescription()
@@ -520,29 +472,21 @@ namespace GenieNS
             {
                 wish_count_description = "third and last";
             }
-
             return wish_count_description;
         }
 
         public static string[] GetAvailableWishes()
         {
             string[] AvailableWishes = [];
-
             AvailableWishes = [SokLoc.Translate("label_genie_exit"), SokLoc.Translate("label_genie_wish_healthy"), SokLoc.Translate("label_genie_wish_wealthy"), SokLoc.Translate("label_genie_wish_world_peace"), SokLoc.Translate("label_genie_wish_no_aggression"), SokLoc.Translate("label_genie_wish_powerful"), SokLoc.Translate("label_genie_wish_immortality")];
             
             if (wishedAmount == 2)
             {
                 AvailableWishes = AvailableWishes.Append(SokLoc.Translate("label_genie_wish_freedom")).ToArray();
             }
-            
             return AvailableWishes;
         }
         
-        // public static IEnumerator GenieRecurring(MagicalLamp lamp)
-        // {
-        //     yield return new WaitForSeconds(0.5f);
-        // }
-
         private static void StopIntro(bool keepCameraPosition = false)
         {
             Cutscenes.Text = "";
@@ -564,43 +508,27 @@ namespace GenieNS
             base.UpdateCard();
         }
 
-
         public override void UpdateCardText()
         {
             descriptionOverride = SokLoc.Translate("genie_special_magical_lamp_warning_description");
-
+            
             if (WorldManager.instance.HoveredCard == MyGameCard)
             {
                 descriptionOverride = SokLoc.Translate("genie_special_magical_lamp_description");
+                
+                if (wishedAmount > 0)
+                {
+                    string new_description;
+                    List<string> wishedList = new List<string>();
+                    wishedList = wishesChosenNames.Split(',').ToList();
+                    new_description = String.Join("<BR>", wishedList);
+                    string extra_text = SokLoc.Translate("label_lamp_wishes_done_description");
+                    new_description = $"{descriptionOverride}{extra_text}{new_description}";
+                    descriptionOverride = new_description;
+                }
             }
         }
 
-
-
-
-
-        // public void RubbingMagicalLampPrompt(string term)
-        // {
-        //     ModalScreen.instance.Clear();
-        //     if (WorldManager.instance.CurrentBoard.Id == "main")
-        //     {
-        //         ModalScreen.instance.SetTexts(SokLoc.Translate(term), SokLoc.Translate("label_rubbing_01"));
-        //     }
-
-        //     ModalScreen.instance.AddOption(SokLoc.Translate("label_rubbing_try_harder"), delegate
-        //     {
-        //         ModalScreen.instance.SetTexts(SokLoc.Translate(term), SokLoc.Translate("label_rubbing_02"));
-        //         GameCanvas.instance.CloseModal();
-        //     });
-
-        //     ModalScreen.instance.AddOption(SokLoc.Translate("label_okay"), delegate
-        //     {
-        //         GameCanvas.instance.CloseModal();
-        //     });
-        //     GameCanvas.instance.OpenModal();
-        // }
     }
-
-
 
 }
