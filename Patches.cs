@@ -75,46 +75,6 @@ namespace GenieNS
             }
         }
 
-        // this worked - just not entirely
-        // [HarmonyPostfix]
-        // [HarmonyPatch(typeof(WorldManager), nameof(WorldManager.CreateCard), new Type[]
-		// {	
-		// 	typeof(Vector3),
-		// 	typeof(CardData),
-		// 	typeof(bool),
-		// 	typeof(bool),
-		// 	typeof(bool),
-		// 	typeof(bool)
-		// })]
-        // public static void WorldManager__CreateCard_Postfix(ref CardData __result)
-        // {
-        //     if (__result.MyCardType is CardType.Humans && __result is Combatable combatable && __result is BaseVillager villager)
-        //     {
-        //         if (GenieMod.instance.WishChosen(Wishes.Powerful))
-        //         {
-        //             Debug.LogWarning("CreateCard made powerful: " + __result.Id);
-        //             villager = GenieMod.instance.MadePowerful(villager);
-
-        //             // combatable.BaseCombatStats.AttackDamage += 2;
-        //             // combatable.BaseCombatStats.AttackSpeed -= (float)1.2;
-        //         }
-
-        //         if (GenieMod.instance.WishChosen(Wishes.Immortality))
-        //         {
-        //             Debug.LogWarning("CreateCard made immortal: " + __result.Id);
-        //             villager = GenieMod.instance.MadeImmortal(villager);
-
-        //             // SpecialHit new_special_hit = new SpecialHit();
-        //             // new_special_hit.Chance = 5;
-        //             // new_special_hit.HitType = SpecialHitType.LifeSteal;
-        //             // new_special_hit.Target = SpecialHitTarget.Target;
-
-        //             // combatable.BaseCombatStats.MaxHealth += 10;
-        //             // combatable.BaseCombatStats.SpecialHits.Add(new_special_hit);
-        //         }
-        //     }
-        // }
-
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Combatable), nameof(Combatable.RealBaseCombatStats), MethodType.Getter)]
         public static void Combatable__RealBaseCombatStats_Postfix(ref Combatable __instance, ref CombatStats __result)
@@ -152,77 +112,6 @@ namespace GenieNS
                 combatable.OnHealthChange(); // this refreshes the text
             }
             GenieMod.instance.ClearWishRecipientList();
-
-
-            // List<Combatable> list = GenieMod.instance.GetWishRecipientList();
-
-            // if (GenieMod.instance.WishChosen(Wishes.Powerful))
-            // {
-            //     foreach (Combatable combatable in list)
-            //     {
-            //         __instance.AttackDamage = stats.AttackDamage + 2;
-            //         __instance.AttackSpeed = stats.AttackSpeed - (float)1.2;
-            //     }
-            // }
-
-            // if (GenieMod.instance.WishChosen(Wishes.Immortality))
-            // {
-            //     SpecialHit new_special_hit = new SpecialHit(); // what if it already has Lifesteal?
-            //     new_special_hit.Chance = 5;
-            //     new_special_hit.HitType = SpecialHitType.LifeSteal;
-            //     new_special_hit.Target = SpecialHitTarget.Target;
-
-            //     foreach (Combatable combatable in list)
-            //     {
-            //         __instance.MaxHealth = stats.MaxHealth + 10;
-            //         __instance.SpecialHits.Add(new_special_hit);
-            //     }
-            // }
-
-            // GenieMod.instance.ClearWishRecipientList(); // to keep it refreshed
         }
-
-
-        // this worked - just not entirely
-        // [HarmonyPostfix]
-        // [HarmonyPatch(typeof(WorldManager), nameof(WorldManager.ChangeToCard))]
-        // public static void WorldManager__ChangeToCard_Postfix(ref CardData __result) // , ref GameCard card, ref string cardId
-        // {
-        //     if (__result.MyCardType is CardType.Humans && __result is Combatable combatable && __result is BaseVillager villager) // __result == card.CardData
-        //     {
-        //         if (GenieMod.instance.WishChosen(Wishes.Powerful))
-        //         {
-        //             Debug.LogWarning("ChangeToCard made powerful: " + __result.Id);
-        //             villager = GenieMod.instance.MadePowerful(villager);
-
-
-        //             // if (villager.GetOverrideEquipable().VillagerTypeOverride != null)
-        //             // {
-
-        //             // }
-
-        //             // combatable.BaseCombatStats.AttackDamage += 2;
-        //             // combatable.BaseCombatStats.AttackSpeed -= (float)1.2;
-        //         }
-
-        //         if (GenieMod.instance.WishChosen(Wishes.Immortality))
-        //         {
-        //             Debug.LogWarning("ChangeToCard made immortal: " + __result.Id); // same as combatable.Id
-
-        //             villager = GenieMod.instance.MadeImmortal(villager);
-        //             // villager = MadeImmortal(villager);
-
-        //             // SpecialHit new_special_hit = new SpecialHit();
-        //             // new_special_hit.Chance = 5;
-        //             // new_special_hit.HitType = SpecialHitType.LifeSteal;
-        //             // new_special_hit.Target = SpecialHitTarget.Target;
-
-        //             // combatable.BaseCombatStats.MaxHealth += 10;
-        //             // combatable.BaseCombatStats.SpecialHits.Add(new_special_hit);
-        //         }
-
-        //     }
-        // }
-
     }
 }

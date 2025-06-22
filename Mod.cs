@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using System.IO;
 
 
 namespace GenieNS
@@ -346,7 +345,6 @@ namespace GenieNS
 
             if (moonCountWishMade == WorldManager.instance.CurrentMonth) // already made a wish this month
             {
-                // Cutscenes.Title = "Genie";
                 Cutscenes.Text = SokLoc.Translate("label_genie_already_wished");
                 yield return new WaitForSeconds(0.8f);
             }
@@ -528,7 +526,6 @@ namespace GenieNS
                 }
             }
         }
-
     }
 
 }
