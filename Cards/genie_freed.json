@@ -11,6 +11,7 @@
     "_CanBreed": false,
     "_CanHaveInventory" : true,
     
+    "_BaseAttackType": "Magic",
     "_BaseCombatStats": {
         "MaxHealth": 25,
         "AttackSpeed": 2.9,
